@@ -28,7 +28,16 @@ public class DigitUtil {
                   + (byte) ((b >> 3) & 0x1) + (byte) ((b >> 2) & 0x1)
                   + (byte) ((b >> 1) & 0x1) + (byte) ((b >> 0) & 0x1);
     }
-    
+    /**
+     * 把一个byte转化位整形,通常为指令用
+     *
+     * @param value
+     * @return
+     * @throws Exception
+     */
+    public int oneByteToInteger(byte value) {
+        return (int) value & 0xFF;
+    }
     public static int byte2ToInt(byte[] src) {
     	int targets = (src[1] & 0xff) | ((src[0] << 8) & 0xff00);
         return targets;
@@ -159,5 +168,4 @@ public class DigitUtil {
         }
         return checkCode;
     }
-    
 }

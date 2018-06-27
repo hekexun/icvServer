@@ -2,7 +2,6 @@ package com.server;
 
 import com.common.JT808Const;
 import com.service.TerminalMsgProcessService;
-import com.service.codec.CatcMsgDecoder;
 import com.service.codec.MsgDecoder;
 import com.vo.PackageData;
 import com.vo.PackageData.MsgBody;
@@ -23,12 +22,10 @@ import io.netty.util.ReferenceCountUtil;
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     private MsgDecoder msgDecoder;
-	private CatcMsgDecoder catcmsgDecoder;//hkx catc
     private TerminalMsgProcessService msgProcessService;
     
     public ServerHandler() {
         this.msgDecoder = ServerApplication.appCtx.getBean(MsgDecoder.class);
-		this.catcmsgDecoder = ServerApplication.appCtx.getBean(CatcMsgDecoder.class);//hkx catc
         this.msgProcessService = ServerApplication.appCtx.getBean(TerminalMsgProcessService.class);
     }
     
@@ -42,7 +39,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 			byte[] bs = new byte[buf.readableBytes()];
 			buf.readBytes(bs);
 			// 字节数据转换为针对于808消息结构的业务对象
-			PackageData pkg = this.catcmsgDecoder.bytes2PackageData(bs);
+			PackageData pkg = this.msgDecoder.bytes2PackageData(bs);
 			// 引用channel,以便回送数据给终端
 			pkg.setChannel(ctx.channel());
 			this.processPackageData(pkg);

@@ -1,24 +1,8 @@
 package com.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
-
-import com.service.codec.MsgEncoder;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
-
 import com.common.JT808Const;
 import com.entity.Config;
-import com.mapper.CarEventMapper;
-import com.mapper.CarHistoryMapper;
-import com.mapper.CarRuntimeMapper;
-import com.mapper.ConfigMapper;
-import com.mapper.DataActionMapper;
-import com.mapper.DataParamMapper;
+import com.mapper.*;
 import com.service.codec.MsgEncoder;
 import com.util.CarEventUtil;
 import com.util.CarHistoryUtil;
@@ -34,10 +18,19 @@ import com.vo.req.LocationMsg.LocationInfo;
 import com.vo.req.VersionMsg;
 import com.vo.req.VersionMsg.VersionInfo;
 import com.vo.resp.RespMsgBody;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
 
 @Service
 @Scope("prototype")
-public class TerminalMsgProcessService extends BaseMsgProcessService {
+public class TerminalMsgProcessService1507备份 extends BaseMsgProcessService {
 
 	@Autowired
     private MsgEncoder msgEncoder;
@@ -78,15 +71,13 @@ public class TerminalMsgProcessService extends BaseMsgProcessService {
     		carRuntimeMapper.insertCarRuntime(locationInfo);
     	}
     	//判断是否需要写入位置信息到数据库
+    	if (CarHistoryUtil.isPersistent(locationInfo)) {
     		carHistoryMapper.insertCarHistory(DateTime.now().toString("M"), locationInfo);
-    	//这个不需要判断，坐标相同也要入库，跟坐标没有关系
+    	}//这个不需要判断，坐标相同也要入库，跟坐标没有关系
     	Session session = sessionManager.findSessionByKey(msg.getMsgHead().getTerminalPhone());
     	//如果session等于null则证明终端没有先发送登录包过来，需要主动断开该连接
     	if (session == null) {
-			String terminalPhone = msg.getMsgHead().getTerminalPhone();
-			session = new Session(terminalPhone, msg.getChannel());
-			session.setLastCommunicateTime(new DateTime());
-			sessionManager.addSession(terminalPhone, session);
+    		msg.getChannel().close();
     	} else {
     		session.setLastCommunicateTime(DateTime.now());
             byte[] bs = this.msgEncoder.encode4LocationResp(msg, new RespMsgBody((byte) 1));

@@ -57,7 +57,7 @@ public class MsgDecoder {
 		PackageData pkg = new PackageData();
 		MsgHead msgHead = this.parseMsgHeadFromBytes(newbs);
 		pkg.setMsgHead(msgHead);
-		byte[] bodybs = DigitUtil.sliceBytes(newbs, 11, 11 + msgHead.getBodyLength() - 1);
+		byte[] bodybs = DigitUtil.sliceBytes(newbs, 11,11 + msgHead.getBodyLength() - 1);
 		MsgBody msgBody = this.parseMsgBodyFromBytes(bodybs);
 		pkg.setMsgBody(msgBody);
 		return pkg;
@@ -128,7 +128,7 @@ public class MsgDecoder {
 		locationInfo.setCarNumber(carNumber);
         //处理司机ID
         locationInfo.setDriverId(new String(DigitUtil.sliceBytes(bodybs, 32, 41)));
-        //处理核准证ID
+        /*//处理核准证ID
         locationInfo.setWorkPassport(new String(DigitUtil.sliceBytes(bodybs, 42, 51)));
         //处理车厢状态
         locationInfo.setBoxClose(bodybs[52]);
@@ -137,7 +137,7 @@ public class MsgDecoder {
         //处理空重状态
         locationInfo.setBoxEmpty(bodybs[54]);
         //处理违规情况
-        locationInfo.setCarWeigui(bodybs[55]);
+        locationInfo.setCarWeigui(bodybs[55]);*/
         locationMsg.setLocationInfo(locationInfo);
 		return locationMsg;
 	}

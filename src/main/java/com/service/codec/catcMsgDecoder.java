@@ -1,15 +1,17 @@
 package com.service.codec;
 
 import com.common.JT808Const;
-import com.common.catcJT808Const;
 import com.util.DigitUtil;
 import com.vo.PackageData;
 import com.vo.PackageData.MsgBody;
 import com.vo.PackageData.MsgHead;
-import com.vo.req.*;
+import com.vo.req.ConfigMsg;
 import com.vo.req.ConfigMsg.ConfigInfo;
+import com.vo.req.EventMsg;
 import com.vo.req.EventMsg.EventInfo;
+import com.vo.req.LocationMsg;
 import com.vo.req.LocationMsg.LocationInfo;
+import com.vo.req.VersionMsg;
 import com.vo.req.VersionMsg.VersionInfo;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -24,23 +26,23 @@ import java.util.List;
  */
 @Component
 @Scope("prototype")
-public class CatcMsgDecoder {
+public class catcMsgDecoder {
 
 	/**
 	 * @Description: 将byte[]解码成业务对象
 	 * @param bs
 	 * @return PackageData  
 	 */
-	public PackageData bytes2PackageData(byte[] bs) {///hkx首先要改变packagedata
+	public PackageData bytes2PackageData(byte[] bs) {
 		//先把数据包反转义一下
 		List<Byte> listbs = new ArrayList<Byte>();
 		for (int i = 1; i < bs.length - 1; i++) {
             //如果当前位是0x7d，判断后一位是否是0x02或0x01，如果是，则反转义
-            if ((bs[i] == (byte)0x22) && (bs[i + 1] == (byte) 0x02)) {
-            	listbs.add((byte) catcJT808Const.MSG_DELIMITER);
+            if ((bs[i] == (byte)0x7d) && (bs[i + 1] == (byte) 0x02)) {
+            	listbs.add((byte) JT808Const.MSG_DELIMITER);
                 i++;
-            } else if ((bs[i] == (byte) 0x22) && (bs[i + 1] == (byte) 0x01)) {
-            	listbs.add((byte) 0x22);
+            } else if ((bs[i] == (byte) 0x7d) && (bs[i + 1] == (byte) 0x01)) {
+            	listbs.add((byte) 0x7d);
                 i++;
             } else {
             	listbs.add(bs[i]);
@@ -54,7 +56,7 @@ public class CatcMsgDecoder {
 		PackageData pkg = new PackageData();
 		MsgHead msgHead = this.parseMsgHeadFromBytes(newbs);
 		pkg.setMsgHead(msgHead);
-		byte[] bodybs = DigitUtil.sliceBytes(newbs, 22, 22 + msgHead.getBodyLength() - 1);
+		byte[] bodybs = DigitUtil.sliceBytes(newbs, 11, 11 + msgHead.getBodyLength() - 1);
 		MsgBody msgBody = this.parseMsgBodyFromBytes(bodybs);
 		pkg.setMsgBody(msgBody);
 		return pkg;
@@ -70,8 +72,8 @@ public class CatcMsgDecoder {
     	msgHead.setEncryptType(encryptType);
     	String bodyLen = DigitUtil.byteToBinaryStr(data[1], 1, 0) + DigitUtil.byteToBinaryStr(data[2], 7, 0);
     	msgHead.setBodyLength(Integer.parseInt(bodyLen, 2));;
-    	msgHead.setTerminalPhone(new String(DigitUtil.bcdToStr(DigitUtil.sliceBytes(data, 5, 21))));
-    	msgHead.setHeadSerial(DigitUtil.byte2ToInt(DigitUtil.sliceBytes(data, 22, 23)));
+    	msgHead.setTerminalPhone(new String(DigitUtil.bcdToStr(DigitUtil.sliceBytes(data, 3, 8))));
+    	msgHead.setHeadSerial(DigitUtil.byte2ToInt(DigitUtil.sliceBytes(data, 9, 10)));
     	return msgHead;
 	}
 	
@@ -87,11 +89,15 @@ public class CatcMsgDecoder {
 	
 	//解码基本位置包
 	public LocationMsg toLocationMsg(PackageData packageData) throws UnsupportedEncodingException {
-		catcMsg catcMsg = new catcMsg(packageData);
-		catcMsg.catcInfo catcInfo = new catcMsg.catcInfo();
-		byte[] bodybs = catcMsg.getMsgBody().getBodyBytes();
+		LocationMsg locationMsg = new LocationMsg(packageData);
+		LocationInfo locationInfo = new LocationInfo();
+		byte[] bodybs = locationMsg.getMsgBody().getBodyBytes();
+		//设置终端手机号
+		locationInfo.setDevPhone(locationMsg.getMsgHead().getTerminalPhone());
+		//设置终端地址
+		locationInfo.setRemoteAddress(locationMsg.getChannel().remoteAddress().toString());
 		//处理状态
-		catcInfo.setLocState(DigitUtil.byteToBinaryStr(bodybs[2]) + DigitUtil.byteToBinaryStr(bodybs[3]));
+		locationInfo.setCarState(DigitUtil.byteToBinaryStr(bodybs[2]) + DigitUtil.byteToBinaryStr(bodybs[3]));
         //处理经度
         float gpsPosX = DigitUtil.byte4ToInt(bodybs, 4);
         locationInfo.setGpsPosX(gpsPosX*25/9/1000000);
@@ -116,6 +122,22 @@ public class CatcMsgDecoder {
         String second = DigitUtil.bcdToStr(bodybs[23]);
         String sendDatetime = "20" + year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
         locationInfo.setSendDatetime(sendDatetime);
+        //处理车牌号码
+        String carNumber = new String(DigitUtil.sliceBytes(bodybs, 24, 31), "GBK");
+		locationInfo.setCarNumber(carNumber);
+        //处理司机ID
+        locationInfo.setDriverId(new String(DigitUtil.sliceBytes(bodybs, 32, 41)));
+        //处理核准证ID
+        locationInfo.setWorkPassport(new String(DigitUtil.sliceBytes(bodybs, 42, 51)));
+        //处理车厢状态
+        locationInfo.setBoxClose(bodybs[52]);
+        //处理举升状态
+        locationInfo.setBoxUp(bodybs[53]);
+        //处理空重状态
+        locationInfo.setBoxEmpty(bodybs[54]);
+        //处理违规情况
+        locationInfo.setCarWeigui(bodybs[55]);
+        locationMsg.setLocationInfo(locationInfo);
 		return locationMsg;
 	}
 	
