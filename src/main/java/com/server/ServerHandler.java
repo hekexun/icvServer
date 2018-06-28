@@ -5,11 +5,7 @@ import com.service.TerminalMsgProcessService;
 import com.service.codec.MsgDecoder;
 import com.vo.PackageData;
 import com.vo.PackageData.MsgBody;
-import com.vo.req.ConfigMsg;
-import com.vo.req.EventMsg;
 import com.vo.req.LocationMsg;
-import com.vo.req.VersionMsg;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -80,48 +76,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 		} else if (bodyId == JT808Const.TASK_BODY_ID_GPS) {
 			LocationMsg msg = this.msgDecoder.toLocationMsg(packageData);
 			this.msgProcessService.processLocationMsg(msg);
-		} else if (bodyId == JT808Const.TASK_BODY_ID_EVENT) {
-			EventMsg msg = this.msgDecoder.toEventMsg(packageData);
-			this.msgProcessService.processEventMsg(msg);
-		} else if (bodyId == JT808Const.TASK_BODY_ID_SELFCHECK) {
-			this.msgProcessService.processSelfCheckMsg(packageData);
-		} else if (bodyId == JT808Const.TASK_BODY_ID_VERSION) {
-			VersionMsg msg = this.msgDecoder.toVersionMsg(packageData);
-			this.msgProcessService.processVersionMsg(msg);
-		} else if (bodyId == JT808Const.TASK_BODY_ID_CONFIG) {
-			ConfigMsg msg = this.msgDecoder.toConfigMsg(packageData);
-			this.msgProcessService.processConfigMsg(msg);
-		}
-		
-		//命令类业务处理，在这里是接收下发命令的响应，不是下发命令
-		if (bodyId == JT808Const.ACTION_BODY_ID_LOCKCAR ||
-			bodyId == JT808Const.ACTION_BODY_ID_LIMITSPEED ||
-			bodyId == JT808Const.ACTION_BODY_ID_LIMITUP ||
-			bodyId == JT808Const.ACTION_BODY_ID_PASSWORD ||
-			bodyId == JT808Const.ACTION_BODY_ID_CONTROL ||
-			bodyId == JT808Const.ACTION_BODY_ID_LOCKCARCOMPANY) {
-			this.msgProcessService.processActionMsg(packageData);
-		} else if (bodyId == JT808Const.ACTION_BODY_ID_IMGACT) {
-			this.msgProcessService.processImageActionMsg(packageData);
-		}
-		
-		//参数类业务处理，在这里是接收下发参数的响应，不是下发参数
-		if (bodyId == JT808Const.PARAM_BODY_ID_LINE ||
-			bodyId == JT808Const.PARAM_BODY_ID_GONG ||
-			bodyId == JT808Const.PARAM_BODY_ID_XIAO ||
-			bodyId == JT808Const.PARAM_BODY_ID_LIMSPCIRCLE ||
-			bodyId == JT808Const.PARAM_BODY_ID_PARKING ||
-			bodyId == JT808Const.PARAM_BODY_ID_BAN ||
-			bodyId == JT808Const.PARAM_BODY_ID_WORKPASSPORT ||
-			bodyId == JT808Const.PARAM_BODY_ID_INFO ||
-			bodyId == JT808Const.PARAM_BODY_ID_FINGER ||
-			bodyId == JT808Const.PARAM_BODY_ID_REDLIGHT ||
-			bodyId == JT808Const.PARAM_BODY_ID_DEVICECONFIG ||
-			bodyId == JT808Const.PARAM_BODY_ID_LOCKCAREXT ||
-			bodyId == JT808Const.PARAM_BODY_ID_NOTIFY ||
-			bodyId == JT808Const.PARAM_BODY_ID_CONTROLSWITCH ||
-			bodyId == JT808Const.PARAM_BODY_ID_THRESHOLDVALUE) {
-			this.msgProcessService.processParamMsg(packageData);
 		}
 	}
 }

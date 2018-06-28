@@ -15,7 +15,6 @@ import com.vo.PackageData;
 import com.vo.req.ConfigMsg;
 import com.vo.req.EventMsg;
 import com.vo.req.LocationMsg;
-import com.vo.req.VersionMsg;
 import com.vo.resp.RespMsgBody;
 
 /**
@@ -110,14 +109,7 @@ public class MsgEncoder {
 		byte[] msgbs = this.encode4Msg(JT808Const.TASK_HEAD_ID, msg.getMsgHead().getTerminalPhone(), bodybs);
 		return msgbs;
 	}
-	
-	//生成终端版本信息上报响应包
-	public byte[] encode4VersionResp(VersionMsg msg, RespMsgBody respMsgBody) {
-		byte[] bodybs = this.encode4CommonRespBody(JT808Const.TASK_BODY_ID_VERSION, respMsgBody.getReplyResult());
-		byte[] msgbs = this.encode4Msg(JT808Const.TASK_HEAD_ID, msg.getMsgHead().getTerminalPhone(), bodybs);
-		return msgbs;
-	}
-	
+
 	//生成终端配置信息上报响应包
 	public byte[] encode4ConfigResp(ConfigMsg msg, Config config) throws UnsupportedEncodingException {
     	byte[] bodyidbs = DigitUtil.shortTo2Byte((short) JT808Const.TASK_BODY_ID_CONFIG);
