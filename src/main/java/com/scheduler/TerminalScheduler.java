@@ -40,7 +40,7 @@ public class TerminalScheduler {
 				iterator.remove();
 			}
 		}
-		carRuntimeMapper.setCarOfflineState(idleTime.toString("yyyy-MM-dd HH:mm:ss"));
+		//最后的时间写入到数据库//carRuntimeMapper.setCarOfflineState(idleTime.toString("yyyy-MM-dd HH:mm:ss"));
 	}
 	
 }

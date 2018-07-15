@@ -1,16 +1,12 @@
 package com.service;
 
+import com.mapper.*;
 import com.service.codec.MsgEncoder;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import com.mapper.CarEventMapper;
-import com.mapper.CarHistoryMapper;
-import com.mapper.CarRuntimeMapper;
-import com.mapper.DataActionMapper;
-import com.mapper.DataParamMapper;
 import com.vo.PackageData;
 import com.vo.Session;
 import com.vo.req.LocationMsg;
@@ -26,6 +22,8 @@ public class TerminalMsgProcessService extends BaseMsgProcessService {
 
 	@Autowired
     private CarRuntimeMapper carRuntimeMapper;
+	@Autowired
+    private BmsHistoryMapper bmsHistoryMapper;
     
 	@Autowired
     private CarHistoryMapper carHistoryMapper;
@@ -53,11 +51,11 @@ public class TerminalMsgProcessService extends BaseMsgProcessService {
     //处理基本位置信息业务
     public void processLocationMsg(LocationMsg msg) throws Exception {
     	LocationInfo locationInfo = msg.getLocationInfo();
-    	if (carRuntimeMapper.updateCarRuntime(locationInfo) == 0) {
-    		carRuntimeMapper.insertCarRuntime(locationInfo);
-    	}
+    	//if (carRuntimeMapper.updateCarRuntime(locationInfo) == 0) {
+    	//	carRuntimeMapper.insertCarRuntime(locationInfo);
+    	//}
     	//判断是否需要写入位置信息到数据库
-    		carHistoryMapper.insertCarHistory(locationInfo);
+    		bmsHistoryMapper.insertBmsHistory(locationInfo);
     	//这个不需要判断，坐标相同也要入库，跟坐标没有关系
     	Session session = sessionManager.findSessionByKey(msg.getMsgHead().getTerminalPhone());
     	//如果session等于null则证明终端没有先发送登录包过来，需要主动断开该连接

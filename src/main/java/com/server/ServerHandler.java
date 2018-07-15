@@ -70,10 +70,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 	private void processPackageData(PackageData packageData) throws Exception {
 		MsgBody body = packageData.getMsgBody();
 		int bodyId = body.getBodyId();
+		int headid=packageData.getMsgHead().getHeadId();
 		//任务类业务处理，这里是接收终端主动上报的信息，包括登录、上报的位置信息、上报的事件等等
 		if (bodyId == JT808Const.TASK_BODY_ID_LOGIN) {
 			this.msgProcessService.processLoginMsg(packageData);
-		} else if (bodyId == JT808Const.TASK_BODY_ID_GPS) {
+		} else if (headid == JT808Const.TASK_BODY_ID_GPS) {
 			LocationMsg msg = this.msgDecoder.toLocationMsg(packageData);
 			this.msgProcessService.processLocationMsg(msg);
 		}
