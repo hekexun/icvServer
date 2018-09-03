@@ -1,10 +1,10 @@
 package com.common;
 
 /**
- * ClassName: JT808Const 
+ * ClassName: IcvServerConst
  * @Description: 消息id、分隔符、抓拍图片保存路径等等配置
  */
-public class JT808Const {
+public class IcvServerConst {
 
 	//抓拍图片保存路径
     public static final String IMAGE_SAVE_PATH = "D:\\catimg\\";
