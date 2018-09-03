@@ -2,7 +2,7 @@
   <artifact type="jar" name="_808hkx2:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/_808hkx2_jar</output-path>
     <root id="archive" name="_808hkx2.jar">
-      <element id="module-output" name="_808hkx2" />
+      <element id="module-output" name="icvServer" />
       <element id="extracted-dir" path="G:/jar/Repository/org/springframework/spring-context/4.3.17.RELEASE/spring-context-4.3.17.RELEASE.jar" path-in-jar="/" />
       <element id="extracted-dir" path="G:/jar/Repository/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar" path-in-jar="/" />
       <element id="extracted-dir" path="G:/jar/Repository/mysql/mysql-connector-java/6.0.6/mysql-connector-java-6.0.6.jar" path-in-jar="/" />
