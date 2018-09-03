@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/icvServer.iml" filepath="$PROJECT_DIR$/icvServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icvServer.iml" filepath="$PROJECT_DIR$/icvServer.iml" />
     </modules>
   </component>
 </project>
