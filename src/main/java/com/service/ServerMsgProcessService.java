@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import com.common.JT808Const;
+import com.common.IcvServerConst;
 import com.entity.CarRuntime;
 import com.entity.DataAction;
 import com.entity.DataParam;

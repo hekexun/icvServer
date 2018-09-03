@@ -123,8 +123,20 @@ public class MsgDecoder {
 		locationInfo.setHeight((float) (DigitUtil.byte2ToInt(DigitUtil.sliceBytes(bodybs,26,27)))/10);
 		//drivemode驾驶模式
 		locationInfo.setDrivemode(DigitUtil.byte2ToInt(DigitUtil.sliceBytes(bodybs,28,29)));
-		//处理车牌号码
-        String carNumber = new String(DigitUtil.sliceBytes(bodybs, 24, 31), "GBK");
+		//发动机转速
+		locationInfo.setEngine(DigitUtil.byte2ToInt(DigitUtil.sliceBytes(bodybs,30,31)));
+		//加速踏板开度
+		locationInfo.setAcceleratorPedal(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[32])));
+		//大气压力
+		locationInfo.setAtmosphericPressure(DigitUtil.byte4ToInt(DigitUtil.sliceBytes(bodybs,33,36)));
+		//制动踏板开度
+		locationInfo.setBrakePedal(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[37])));
+		//温度
+		locationInfo.setTempreture(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[38])));
+		//方向盘转角
+		locationInfo.setSteeringwheelAngle(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[39])));
+		//视频状态
+		locationInfo.setVideostate(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[40])));
 
         locationMsg.setLocationInfo(locationInfo);
 		return locationMsg;
