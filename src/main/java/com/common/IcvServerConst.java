@@ -10,14 +10,14 @@ public class IcvServerConst {
     public static final String IMAGE_SAVE_PATH = "D:\\catimg\\";
     
 	//消息分隔符
-	public static final int MSG_DELIMITER = 0x7e;
+	public static final int MSG_DELIMITER = 0x23;
 	
 	//任务类
     public static final int TASK_HEAD_ID = 0x0F01; //任务类       
 
     public static final int TASK_BODY_ID_LOGIN = 0x0101; //任务类 - 登录ID
 
-    public static final int TASK_BODY_ID_GPS = 0x0102; //任务类 - GPSID  
+    public static final int TASK_BODY_ID_GPS = 0x83; //任务类 - GPSID
     
     public static final int TASK_BODY_ID_EVENT = 0x0103; //任务类 - 事件ID
     

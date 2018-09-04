@@ -55,8 +55,8 @@ public class ServerApplication {
                         public void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(15, 0, 0, TimeUnit.MINUTES));
                             //2048表示单条消息的最大长度，解码器在查找分隔符的时候，达到该长度还没找到的话会抛异常
-                            ch.pipeline().addLast(new DelimiterBasedFrameDecoder(2048, true, Unpooled.copiedBuffer(new byte[] { 0x7e }),
-                                    Unpooled.copiedBuffer(new byte[] { 0x7e, 0x7e })));
+                            ch.pipeline().addLast(new DelimiterBasedFrameDecoder(2048, true, Unpooled.copiedBuffer(new byte[] { 0x23 }),
+                                    Unpooled.copiedBuffer(new byte[] { 0x23, 0x23 })));
                             //添加业务处理handler
                             ch.pipeline().addLast(new ServerHandler());
                         }

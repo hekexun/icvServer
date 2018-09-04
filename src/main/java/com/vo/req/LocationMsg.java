@@ -42,10 +42,32 @@ public class LocationMsg extends PackageData {
 		public void setDevPhone(String devPhone) {
 			this.devPhone = devPhone;
 		}
-        ///hekexun
+        ///by hkx
+		/*
+		解析字节码
+		从22字节开始，重新标识为0
+		时间0-6，空7,8,9
+		运行模式10，依次排序
+		 */
 		private String devPhone;//号码
 		private String sendDatetime; //时间(设备时间)0-6
 		private String locateState; //运行模式，第10字节1bite，
+		private float gpsPosX; //经度11-14 /除以10的6次方
+		private float gpsPosY; //纬度15-18 /除以10的6次方
+		private float gpsSpeed; //速度19-20 除以10
+		private int gpsDirect; //方向21-22
+		private float gpsMileage;//里程23
+		private float canSpeed; //can速度 24-25 除以10
+		private float Height; //高程 除以10  26-27
+		private  int drivemode ;//驾驶模式   28-29
+		private int engine;//发动机转速 30-31
+		private int acceleratorPedal;//加速踏板开度 32
+		private int atmosphericPressure;//大气压力33-36
+		private int brakePedal;//制动踏板开度 37
+		private int tempreture;//温度 38
+		private int steeringwheelAngle;//方向盘转角39
+		private int videostate;//视频状态 40
+
 
 		public String getLocateState() {
 			return locateState;
@@ -174,22 +196,6 @@ public class LocationMsg extends PackageData {
 		public void setVideostate(int videostate) {
 			this.videostate = videostate;
 		}
-
-		private float gpsPosX; //经度11-14 /除以10的6次方
-		private float gpsPosY; //纬度15-18 /除以10的6次方
-		private float gpsSpeed; //速度19-20 除以10
-		private int gpsDirect; //方向21-22
-		private float gpsMileage;//里程23
-		private float canSpeed; //can速度 24-25 除以10
-		private float Height; //高程 除以10  26-27
-		private  int drivemode ;//驾驶模式   28-29
-		private int engine;//发动机转速 30-31
-		private int acceleratorPedal;//加速踏板开度 32
-		private int atmosphericPressure;//大气压力33-36
-		private int brakePedal;//制动踏板开度 37
-		private int tempreture;//温度 38
-		private int steeringwheelAngle;//方向盘转角39
-		private int videostate;//视频状态 40
 
 
 

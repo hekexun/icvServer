@@ -35,7 +35,7 @@ public class DigitUtil {
      * @return
      * @throws Exception
      */
-    public int oneByteToInteger(byte value) {
+    public static int oneByteToInteger(byte value) {
         return (int) value & 0xFF;
     }
     public static int byte2ToInt(byte[] src) {
@@ -167,5 +167,57 @@ public class DigitUtil {
             }
         }
         return checkCode;
+    }
+    /**
+     * 16进制直接转换成为字符串(无需Unicode解码)
+     * @param hexStr
+     * @return
+     */
+    /**
+     * 方法二：
+     * byte[] to hex string
+     *
+     * @param bytes
+     * @return
+     */
+    public static String bytesToHexString(byte[] bytes) {
+         final char[] HEX_CHAR = {'0', '1', '2', '3', '4', '5',
+                '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+        char[] buf = new char[bytes.length * 2];
+        int index = 0;
+        for(byte b : bytes) { // 利用位运算进行转换，可以看作方法一的变种
+            buf[index++] = HEX_CHAR[b >>> 4 & 0xf];
+            buf[index++] = HEX_CHAR[b & 0xf];
+        }
+
+        return new String(buf);
+    }
+    public static String byteArrayToStr(byte[] byteArray) {
+        if (byteArray == null) {
+            return null;
+        }
+        String str = new String(byteArray);
+        return str;
+    }
+    /**
+     * @Title:bytes2HexString
+     * @Description:字节数组转16进制字符串
+     * @param b
+     *            字节数组
+     * @return 16进制字符串
+     * @throws
+     */
+    public static String bytes2HexString(byte[] b) {
+        StringBuffer result = new StringBuffer();
+        String hex;
+        for (int i = 0; i < b.length; i++) {
+            hex = Integer.toHexString(b[i] & 0xFF);
+            if (hex.length() == 1) {
+                hex = '0' + hex;
+            }
+            result.append(hex.toUpperCase());
+        }
+        return result.toString();
     }
 }

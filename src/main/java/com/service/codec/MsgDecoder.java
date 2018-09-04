@@ -52,7 +52,7 @@ public class MsgDecoder {
 		PackageData pkg = new PackageData();
 		MsgHead msgHead = this.parseMsgHeadFromBytes(newbs);
 		pkg.setMsgHead(msgHead);
-		byte[] bodybs = DigitUtil.sliceBytes(newbs, 12,12 + msgHead.getBodyLength() - 1);
+		byte[] bodybs = DigitUtil.sliceBytes(newbs, 22,22 + msgHead.getBodyLength() - 1);
 		MsgBody msgBody = this.parseMsgBodyFromBytes(bodybs);
 		pkg.setMsgBody(msgBody);
 		return pkg;
@@ -70,7 +70,7 @@ public class MsgDecoder {
     	msgHead.setEncryptType(encryptType);
     	String bodyLen = DigitUtil.byteToBinaryStr(data[2]);//(data[2], 1, 0) + DigitUtil.byteToBinaryStr(data[3], 7, 0);//(data[1], 1, 0) + DigitUtil.byteToBinaryStr(data[2], 7, 0);
     	msgHead.setBodyLength(Integer.parseInt(bodyLen, 2));;
-    	msgHead.setTerminalPhone(new String(DigitUtil.bcdToStr(DigitUtil.sliceBytes(data, 5, 21))));
+    	msgHead.setTerminalPhone(DigitUtil.byteArrayToStr(DigitUtil.sliceBytes(data, 5, 21)));
     	msgHead.setHeadSerial(DigitUtil.byte2ToInt(DigitUtil.sliceBytes(data, 3, 4)));
     	return msgHead;
 	}

@@ -22,8 +22,6 @@ public class TerminalMsgProcessService extends BaseMsgProcessService {
 
 	@Autowired
     private CarRuntimeMapper carRuntimeMapper;
-	@Autowired
-    private BmsHistoryMapper bmsHistoryMapper;
     
 	@Autowired
     private CarHistoryMapper carHistoryMapper;
@@ -55,7 +53,7 @@ public class TerminalMsgProcessService extends BaseMsgProcessService {
     	//	carRuntimeMapper.insertCarRuntime(locationInfo);
     	//}
     	//判断是否需要写入位置信息到数据库
-    		bmsHistoryMapper.insertBmsHistory(locationInfo);
+    		carHistoryMapper.insertCarHistory(locationInfo);
     	//这个不需要判断，坐标相同也要入库，跟坐标没有关系
     	Session session = sessionManager.findSessionByKey(msg.getMsgHead().getTerminalPhone());
     	//如果session等于null则证明终端没有先发送登录包过来，需要主动断开该连接
