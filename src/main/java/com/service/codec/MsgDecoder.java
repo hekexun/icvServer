@@ -104,7 +104,7 @@ public class MsgDecoder {
 		//设置终端地址
 		//locationInfo.setRemoteAddress(locationMsg.getChannel().remoteAddress().toString());
 		//定位状态
-		locationInfo.setLocateState(DigitUtil.byteToBinaryStr(bodybs[10],0,0));//电池状态字符第一个字节的第一位;
+		locationInfo.setLocateState(DigitUtil.byteToBinaryStr(bodybs[10],0,0));//状态字符第一个字节的第一位;
        //经度
 		int lot=DigitUtil.byte4ToInt(DigitUtil.sliceBytes(bodybs,11,14));
 		locationInfo.setGpsPosX((float)lot/1000000);
@@ -126,17 +126,17 @@ public class MsgDecoder {
 		//发动机转速
 		locationInfo.setEngine(DigitUtil.byte2ToInt(DigitUtil.sliceBytes(bodybs,30,31)));
 		//加速踏板开度
-		locationInfo.setAcceleratorPedal(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[32])));
+		locationInfo.setAcceleratorPedal(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[32]),2));
 		//大气压力
 		locationInfo.setAtmosphericPressure(DigitUtil.byte4ToInt(DigitUtil.sliceBytes(bodybs,33,36)));
 		//制动踏板开度
-		locationInfo.setBrakePedal(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[37])));
+		locationInfo.setBrakePedal(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[37]),2));
 		//温度
-		locationInfo.setTempreture(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[38])));
+		locationInfo.setTempreture(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[38]),2));
 		//方向盘转角
-		locationInfo.setSteeringwheelAngle(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[39])));
+		locationInfo.setSteeringwheelAngle(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[39]),2));
 		//视频状态
-		locationInfo.setVideostate(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[40])));
+		locationInfo.setVideostate(Integer.parseInt(DigitUtil.byteToBinaryStr(bodybs[40]),2));
 
         locationMsg.setLocationInfo(locationInfo);
 		return locationMsg;

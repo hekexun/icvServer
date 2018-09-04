@@ -5,7 +5,7 @@ import java.io.UnsupportedEncodingException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.common.JT808Const;
+import com.common.IcvServerConst;
 import com.entity.Config;
 import com.entity.DataAction;
 import com.entity.DataParam;
@@ -29,7 +29,7 @@ public class MsgEncoder {
 	public byte[] encode4Msg(int headId, String terminalPhone, byte[] bodybs) {
         //消息头
         byte[] headbs = new byte[13];
-        headbs[0] = (byte) JT808Const.MSG_DELIMITER;
+        headbs[0] = (byte) IcvServerConst.MSG_DELIMITER;
         //消息头标识Id
         byte[] headidbs = DigitUtil.shortTo2Byte((short) headId);
         headbs[1] = headidbs[0];
@@ -74,7 +74,7 @@ public class MsgEncoder {
         headbs[12] = 0x00;
         
         //消息尾
-        byte[] tailbs = new byte[] {0x00, (byte) JT808Const.MSG_DELIMITER};
+        byte[] tailbs = new byte[] {0x00, (byte) IcvServerConst.MSG_DELIMITER};
         
         //整个消息
         byte[] msgbs = ArrayUtil.concatAll(headbs, bodybs, tailbs);
@@ -91,34 +91,34 @@ public class MsgEncoder {
 	
 	//生成登录响应包
 	public byte[] encode4LoginResp(PackageData packageData, RespMsgBody respMsgBody) {
-		byte[] bodybs = this.encode4CommonRespBody(JT808Const.TASK_BODY_ID_LOGIN, respMsgBody.getReplyResult());
-		byte[] msgbs = this.encode4Msg(JT808Const.TASK_HEAD_ID, packageData.getMsgHead().getTerminalPhone(), bodybs);
+		byte[] bodybs = this.encode4CommonRespBody(IcvServerConst.TASK_BODY_ID_LOGIN, respMsgBody.getReplyResult());
+		byte[] msgbs = this.encode4Msg(IcvServerConst.TASK_HEAD_ID, packageData.getMsgHead().getTerminalPhone(), bodybs);
 		return msgbs;
 	}
 	
 	//生成位置信息响应包
 	public byte[] encode4LocationResp(LocationMsg msg, RespMsgBody respMsgBody) {
-		byte[] bodybs = this.encode4CommonRespBody(JT808Const.TASK_BODY_ID_GPS, respMsgBody.getReplyResult());
-		byte[] msgbs = this.encode4Msg(JT808Const.TASK_HEAD_ID, msg.getMsgHead().getTerminalPhone(), bodybs);
+		byte[] bodybs = this.encode4CommonRespBody(IcvServerConst.TASK_BODY_ID_GPS, respMsgBody.getReplyResult());
+		byte[] msgbs = this.encode4Msg(IcvServerConst.TASK_HEAD_ID, msg.getMsgHead().getTerminalPhone(), bodybs);
 		return msgbs;
 	}
 	
 	//生成事件响应包
 	public byte[] encode4EventResp(EventMsg msg, RespMsgBody respMsgBody) {
-		byte[] bodybs = this.encode4CommonRespBody(JT808Const.TASK_BODY_ID_EVENT, respMsgBody.getReplyResult());
-		byte[] msgbs = this.encode4Msg(JT808Const.TASK_HEAD_ID, msg.getMsgHead().getTerminalPhone(), bodybs);
+		byte[] bodybs = this.encode4CommonRespBody(IcvServerConst.TASK_BODY_ID_EVENT, respMsgBody.getReplyResult());
+		byte[] msgbs = this.encode4Msg(IcvServerConst.TASK_HEAD_ID, msg.getMsgHead().getTerminalPhone(), bodybs);
 		return msgbs;
 	}
 
 	//生成终端配置信息上报响应包
 	public byte[] encode4ConfigResp(ConfigMsg msg, Config config) throws UnsupportedEncodingException {
-    	byte[] bodyidbs = DigitUtil.shortTo2Byte((short) JT808Const.TASK_BODY_ID_CONFIG);
+    	byte[] bodyidbs = DigitUtil.shortTo2Byte((short) IcvServerConst.TASK_BODY_ID_CONFIG);
         byte[] headserialbs = DigitUtil.int32To4Byte(msg.getMsgHead().getHeadSerial());
 		byte[] macbs = config.getMac().getBytes();
 		byte[] configbs = (config.getCarNumber() + "," + config.getDevPhone() + "," 
 				+ config.getVersion() + "," + config.getEcuType() + "," + config.getCarType()).getBytes();
 		byte[] bodybs = ArrayUtil.concatAll(bodyidbs, headserialbs, macbs, configbs);
-		byte[] msgbs = this.encode4Msg(JT808Const.TASK_HEAD_ID, msg.getMsgHead().getTerminalPhone(), bodybs);
+		byte[] msgbs = this.encode4Msg(IcvServerConst.TASK_HEAD_ID, msg.getMsgHead().getTerminalPhone(), bodybs);
 		return msgbs;
 	}
 	

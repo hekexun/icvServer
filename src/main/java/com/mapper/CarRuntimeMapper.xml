@@ -2,46 +2,80 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mapper.CarRuntimeMapper">
 
-	<insert id="insertCarRuntime">
-		insert into zt_car_runtime (
-		  dev_phone,
-		  gps_pos_x,
-		  gps_pos_y,
-		  gps_speed,
-		  gps_height,
-		  gps_direct,
-		  send_datetime,
-		  revice_datetime
+    <insert id="insertCarRuntime">
+		insert into tb_carruntime (
+		  devphone,
+		  locateState,
+		  gpsPosx,
+		  gpsPosy,
+		  gpsSpeed,
+		  gpsDirect,
+		  gpsMileage,
+		  canSpeed,
+		  Height,
+		  drivemode,
+		  engine,
+		  acceleratorPedal,
+		  atmosphericPressure,
+		  brakePedal,
+		  tempreture,
+		  steeringwheelAngle,
+		  videostate,
+		  sendDatetime,
+		  reviceDatetime
 		)
 		values
 		  (
-		  	'111',
-		    ${locationInfo.gpsPosX},
-		    ${locationInfo.gpsPosY},
-		    ${locationInfo.gpsSpeed},
-		    ${locationInfo.gpsHeight},
-		    ${locationInfo.gpsDirect},
+		  	'${locationInfo.devPhone}',
+		  	'${locationInfo.locateState}',
+		    '${locationInfo.gpsPosX}',
+		    '${locationInfo.gpsPosY}',
+		    '${locationInfo.gpsSpeed}',
+		    '${locationInfo.gpsDirect}',
+		     '${locationInfo.gpsMileage}',
+		    '${locationInfo.canSpeed}',
+		    '${locationInfo.Height}',
+		    '${locationInfo.drivemode}',
+		    '${locationInfo.engine}',
+		    '${locationInfo.acceleratorPedal}',
+		    '${locationInfo.atmosphericPressure}',
+		    '${locationInfo.brakePedal}',
+		    '${locationInfo.tempreture}',
+		     '${locationInfo.steeringwheelAngle}',
+		    '${locationInfo.videostate}',
 		    '${locationInfo.sendDatetime}',
 		    now()
 		  ) 
 	</insert>
-	
-	<update id="updateCarRuntime">
+
+    <update id="updateCarRuntime">
 		update 
-		  zt_car_runtime
+		  tb_carruntime
 		set
-		  gps_pos_x = '${locationInfo.gpsPosX}',
-		  gps_pos_y = '${locationInfo.gpsPosY}',
-		  gps_speed = '${locationInfo.gpsSpeed}',
-		  gps_height = '${locationInfo.gpsHeight}',
-		  gps_direct = '${locationInfo.gpsDirect}',
-		  send_datetime = '${locationInfo.sendDatetime}',
-		  revice_datetime = now()
+			devphone='${locationInfo.devPhone}',
+			locateState='${locationInfo.locateState}',
+			gpsPosx= '${locationInfo.gpsPosX}',
+			gpsPosy= '${locationInfo.gpsPosY}',
+			gpsSpeed= '${locationInfo.gpsSpeed}',
+			gpsDirect= '${locationInfo.gpsDirect}',
+			gpsMileage=  '${locationInfo.gpsMileage}',
+			canSpeed= '${locationInfo.canSpeed}',
+			Height= '${locationInfo.Height}',
+			drivemode= '${locationInfo.drivemode}',
+			engine= '${locationInfo.engine}',
+			acceleratorPedal= '${locationInfo.acceleratorPedal}',
+			atmosphericPressure= '${locationInfo.atmosphericPressure}',
+			brakePedal= '${locationInfo.brakePedal}',
+			tempreture= '${locationInfo.tempreture}',
+			steeringwheelAngle=  '${locationInfo.steeringwheelAngle}',
+			videostate= '${locationInfo.videostate}',
+			sendDatetime= '${locationInfo.sendDatetime}',
+			reviceDatetime= now()
 		where
-			dev_phone = '${locationInfo.devPhone}'
+			devphone = '${locationInfo.devPhone}'
 	</update>
 
-	<update id="setCarOnlineState">
+    <update id="setCarOnlineState">
 		update 
 		  zt_car_runtime
 		set 
@@ -50,7 +84,7 @@
 		where
 		  dev_phone = '${devPhone}' 
 	</update>
-	
+
     <update id="setCarOfflineState">
 		update 
 		  zt_car_runtime
@@ -61,8 +95,8 @@
 		  revice_datetime &lt;= '${idleTime}'
 		  and online_state = 1
 	</update>
-	
-	<select id="findCarPassword" resultType="com.entity.CarRuntime">
+
+    <select id="findCarPassword" resultType="com.entity.CarRuntime">
 		select 
 		  car_password carPassword
 	    from 

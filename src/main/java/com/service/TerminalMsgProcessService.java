@@ -49,9 +49,9 @@ public class TerminalMsgProcessService extends BaseMsgProcessService {
     //处理基本位置信息业务
     public void processLocationMsg(LocationMsg msg) throws Exception {
     	LocationInfo locationInfo = msg.getLocationInfo();
-    	//if (carRuntimeMapper.updateCarRuntime(locationInfo) == 0) {
-    	//	carRuntimeMapper.insertCarRuntime(locationInfo);
-    	//}
+    	if (carRuntimeMapper.updateCarRuntime(locationInfo) == 0) {
+    		carRuntimeMapper.insertCarRuntime(locationInfo);
+    	}
     	//判断是否需要写入位置信息到数据库
     		carHistoryMapper.insertCarHistory(locationInfo);
     	//这个不需要判断，坐标相同也要入库，跟坐标没有关系
