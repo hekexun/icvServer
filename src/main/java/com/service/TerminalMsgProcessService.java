@@ -2,6 +2,8 @@ package com.service;
 
 import com.mapper.*;
 import com.service.codec.MsgEncoder;
+import com.util.ByteUtil;
+import com.util.DigitUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -64,8 +66,9 @@ public class TerminalMsgProcessService extends BaseMsgProcessService {
 			sessionManager.addSession(terminalPhone, session);
     	} else {
     		session.setLastCommunicateTime(DateTime.now());
-            byte[] bs = this.msgEncoder.encode4LocationResp(msg, new RespMsgBody((byte) 1));
-            super.send2Terminal(msg.getChannel(), bs);
+            byte[] bs = this.msgEncoder.encode4LocationResp(msg, new RespMsgBody((byte) 0));
+            byte[] bs2= ByteUtil.integerTo1Bytes(1);
+            super.send2Terminal(msg.getChannel(), bs);//切换为回复0
     	}
     }
 }

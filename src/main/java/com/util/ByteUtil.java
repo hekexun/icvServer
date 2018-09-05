@@ -15,7 +15,7 @@ public class ByteUtil {
      * @return
      * @throws Exception
      */
-    public byte integerTo1Byte(int value) {
+    public static byte integerTo1Byte(int value) {
         return (byte) (value & 0xFF);
     }
 
@@ -26,7 +26,7 @@ public class ByteUtil {
      * @return
      * @throws Exception
      */
-    public byte[] integerTo1Bytes(int value) {
+    public static byte[] integerTo1Bytes(int value) {
         byte[] result = new byte[1];
         result[0] = (byte) (value & 0xFF);
         return result;

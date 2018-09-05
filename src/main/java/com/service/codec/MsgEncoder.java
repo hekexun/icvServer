@@ -91,7 +91,7 @@ public class MsgEncoder {
 	
 	//生成登录响应包
 	public byte[] encode4LoginResp(PackageData packageData, RespMsgBody respMsgBody) {
-		byte[] bodybs = this.encode4CommonRespBody(IcvServerConst.TASK_BODY_ID_LOGIN, respMsgBody.getReplyResult());
+		byte[] bodybs = this.encode4CommonRespBody(IcvServerConst.TASK_BODY_ID_LOGIN, respMsgBody.getReplyResult());//0x0101,0
 		byte[] msgbs = this.encode4Msg(IcvServerConst.TASK_HEAD_ID, packageData.getMsgHead().getTerminalPhone(), bodybs);
 		return msgbs;
 	}
