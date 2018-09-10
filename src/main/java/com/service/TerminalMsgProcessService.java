@@ -67,8 +67,8 @@ public class TerminalMsgProcessService extends BaseMsgProcessService {
     	} else {
     		session.setLastCommunicateTime(DateTime.now());
             byte[] bs = this.msgEncoder.encode4LocationResp(msg, new RespMsgBody((byte) 0));
-            byte[] bs2= ByteUtil.integerTo1Bytes(1);
-            super.send2Terminal(msg.getChannel(), bs);//切换为回复0
+            byte[] bs2= ByteUtil.integerTo1Bytes(0);
+            super.send2Terminal(msg.getChannel(), bs2);//切换为回复0
     	}
     }
 }

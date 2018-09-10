@@ -26,6 +26,19 @@ public class BaseMsgProcessService {
 		//转义数据包
         List<Byte> list = new ArrayList<Byte>();
         list.add((byte)IcvServerConst.MSG_DELIMITER);
+        //正常使用过程中
+        for (int i = 0; i < array.length ; i++){
+            if (array[i] == (byte)IcvServerConst.MSG_DELIMITER) {
+                list.add((byte)0x7d);
+                list.add((byte)0x02);
+            } else if (array[i] == (byte)0x7d) {
+                list.add((byte)0x7d);
+                list.add((byte)0x01);
+            } else {
+                list.add(array[i]);
+            }
+        }
+        /*下发文件版本
         for (int i = 1; i < array.length - 1; i++){
             if (array[i] == (byte)IcvServerConst.MSG_DELIMITER) {
             	list.add((byte)0x7d);
@@ -36,7 +49,7 @@ public class BaseMsgProcessService {
             } else {
             	list.add(array[i]);
             }
-        }
+        }*/
         list.add((byte)IcvServerConst.MSG_DELIMITER);
         byte[] bs  = new byte[list.size()];
         for (int i = 0; i < list.size(); i++) {
